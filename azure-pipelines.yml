@@ -7,12 +7,31 @@ trigger:
 - main
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: 'ubuntu-latest'
 
 steps:
-- script: echo "HELLO MEGHANA PIPELINE TEST" > output.txt
-  displayName: 'Create File'
 
-- publish: output.txt
-  artifact: drop
-  
+- checkout: self
+
+- script: |
+    echo "Current Directory:"
+    pwd
+    echo "Files in Repository:"
+    ls -R
+  displayName: 'Verify Repository Structure'
+
+- task: Maven@3
+  displayName: 'Build Maven Project'
+  inputs:
+    mavenPomFile: 'Javateam/pom.xml'
+    goals: 'clean package'
+    publishJUnitResults: true
+    testResultsFiles: '**/surefire-reports/TEST-*.xml'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '17'
+    jdkArchitectureOption: 'x64'
+    mavenOptions: '-Xmx3072m'
+
+- publish: 'Javateam/target'
+  artifact: 'drop'
+  displayName: 'Publish Build Artifact'
