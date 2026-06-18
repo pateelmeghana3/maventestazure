@@ -10,5 +10,19 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-- script: echo "HELLO MEGHANA PIPELINE TEST"
-  displayName: 'Test Step'
+- checkout: self
+
+- script: |
+    pwd
+    ls -la
+    find . -name pom.xml
+  displayName: 'Find pom.xml'
+
+- task: Maven@3
+  inputs:
+    mavenPomFile: 'pom.xml'
+    goals: 'package'
+    publishJUnitResults: true
+    testResultsFiles: '**/surefire-reports/TEST-*.xml'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.11'
