@@ -10,16 +10,6 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-
-- checkout: self
-
-- script: |
-    echo "Current Directory:"
-    pwd
-    echo "Files in Repository:"
-    ls -R
-  displayName: 'Verify Repository Structure'
-
 - task: Maven@3
   displayName: 'Build Maven Project'
   inputs:
@@ -30,8 +20,7 @@ steps:
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '17'
     jdkArchitectureOption: 'x64'
-    mavenOptions: '-Xmx3072m'
 
-- publish: 'Javateam/target'
+- publish: 'Javateam'
   artifact: 'drop'
-  displayName: 'Publish Build Artifact'
+  displayName: 'Publish Complete Project'
