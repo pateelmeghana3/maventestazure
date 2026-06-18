@@ -10,5 +10,9 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-- script: echo "HELLO MEGHANA PIPELINE TEST"
-  displayName: 'Test Step'
+- script: echo "HELLO MEGHANA PIPELINE TEST" > output.txt
+  displayName: 'Create File'
+
+- publish: output.txt
+  artifact: drop
+  
